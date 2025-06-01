@@ -26,6 +26,7 @@
         <hutool.version>5.8.35</hutool.version>
         <gson-javatime-serialisers.version>1.1.2</gson-javatime-serialisers.version>
         <lombok.version>1.18.36</lombok.version>
+        <knife4j-spring-boot-starter.version>4.4.0</knife4j-spring-boot-starter.version>
 
         <!-- Plugin -->
         <maven-flatten-plugin.version>1.5.0</maven-flatten-plugin.version>
@@ -201,9 +202,15 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- OpenAPI -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+            <version>${knife4j-spring-boot-starter.version}</version>
         </dependency>
     </dependencies>
-
-
 
 </project>
