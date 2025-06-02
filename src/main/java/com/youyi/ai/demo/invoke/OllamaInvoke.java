@@ -7,9 +7,13 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.boot.CommandLineRunner;
 
 /**
+ * spring.ai.ollama.base-url=http://localhost:11434
+ * spring.ai.ollama.chat.model=qwen3:0.6b
+ *
  * @author <a href="https://github.com/yoyocraft">yoyocraft</a>
  * @date 2025/06/01
  */
+
 // @Component
 public class OllamaInvoke implements CommandLineRunner {
 

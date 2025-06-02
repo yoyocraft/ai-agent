@@ -1,0 +1,37 @@
+package com.youyi.ai.app;
+
+import cn.hutool.core.util.IdUtil;
+import com.youyi.ai.BaseIT;
+import jakarta.annotation.Resource;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author <a href="https://github.com/yoyocraft">yoyocraft</a>
+ * @date 2025/06/02
+ */
+class LoveAppIT extends BaseIT {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoveAppIT.class);
+
+    @Resource
+    LoveApp loveApp;
+
+    @Test
+    void testChat() {
+        String chatId = IdUtil.nanoId();
+        // turn 1
+        String message = "你好，我是游艺";
+        String response = loveApp.chat(message, chatId);
+        logger.info("[turn1]response: {}", response);
+        // turn 2
+        message = "我想让另一半（Money）更喜欢我";
+        response = loveApp.chat(message, chatId);
+        logger.info("[turn2]response: {}", response);
+        // turn 3
+        message = "我的另一半叫什么来着？刚跟你说过，帮我回忆下";
+        response = loveApp.chat(message, chatId);
+        logger.info("[turn3]response: {}", response);
+    }
+}
