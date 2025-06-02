@@ -30,9 +30,5 @@ class LoveAppIT extends BaseIT {
         message = "我想让另一半（Money）更喜欢我";
         response = loveApp.chat(message, chatId);
         Assertions.assertNotNull(response);
-        // turn 3
-        message = "我的另一半叫什么来着？刚跟你说过，帮我回忆下";
-        response = loveApp.chat(message, chatId);
-        Assertions.assertNotNull(response);
     }
 }

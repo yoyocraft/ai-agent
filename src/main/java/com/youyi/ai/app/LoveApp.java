@@ -1,6 +1,7 @@
 package com.youyi.ai.app;
 
 import com.youyi.ai.advisor.LoggerAdvisor;
+import com.youyi.ai.advisor.ReReadingAdvisor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
@@ -43,7 +44,8 @@ public class LoveApp {
             .defaultSystem(LOVE_APP_SYSTEM_PROMPT)
             .defaultAdvisors(
                 new MessageChatMemoryAdvisor(new InMemoryChatMemory()),
-                new LoggerAdvisor()
+                new LoggerAdvisor(),
+                new ReReadingAdvisor()
             )
             .build();
     }
@@ -59,9 +61,7 @@ public class LoveApp {
             )
             .call()
             .chatResponse();
-        String content = response.getResult().getOutput().getText();
-        logger.info("response: {}", content);
-        return content;
+        return response.getResult().getOutput().getText();
     }
 
 }
