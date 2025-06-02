@@ -1,7 +1,7 @@
 package com.youyi.ai.app;
 
 import com.youyi.ai.advisor.LoggerAdvisor;
-import com.youyi.ai.advisor.ReReadingAdvisor;
+import com.youyi.ai.util.GsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
@@ -44,8 +44,8 @@ public class LoveApp {
             .defaultSystem(LOVE_APP_SYSTEM_PROMPT)
             .defaultAdvisors(
                 new MessageChatMemoryAdvisor(new InMemoryChatMemory()),
-                new LoggerAdvisor(),
-                new ReReadingAdvisor()
+                new LoggerAdvisor()
+                // new ReReadingAdvisor()
             )
             .build();
     }
@@ -62,6 +62,22 @@ public class LoveApp {
             .call()
             .chatResponse();
         return response.getResult().getOutput().getText();
+    }
+
+    public LoveReport chatWithReport(String message, String chatId) {
+        LoveReport loveReport = chatClient
+            .prompt()
+            .system(LOVE_APP_SYSTEM_PROMPT + "\n每次对话之后生成恋爱结果，标题为{用户名}恋爱报告，内容为建议列表")
+            .user(message)
+            .advisors(
+                spec -> spec
+                    .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                    .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10)
+            )
+            .call()
+            .entity(LoveReport.class);
+        logger.info("love report: {}", GsonUtil.toJson(loveReport));
+        return loveReport;
     }
 
 }

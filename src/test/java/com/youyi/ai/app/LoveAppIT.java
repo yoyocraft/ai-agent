@@ -31,4 +31,12 @@ class LoveAppIT extends BaseIT {
         response = loveApp.chat(message, chatId);
         Assertions.assertNotNull(response);
     }
+
+    @Test
+    void testChatWithReport() {
+        String chatId = IdUtil.nanoId();
+        String message = "你好，我是游艺，我想让另一半更喜欢我，但我不知道怎么做。";
+        LoveReport report = loveApp.chatWithReport(message, chatId);
+        Assertions.assertNotNull(report);
+    }
 }

@@ -25,6 +25,7 @@
         <lombok.version>1.18.30</lombok.version>
         <hutool.version>5.8.35</hutool.version>
         <gson-javatime-serialisers.version>1.1.2</gson-javatime-serialisers.version>
+        <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
         <lombok.version>1.18.36</lombok.version>
         <knife4j-spring-boot-starter.version>4.4.0</knife4j-spring-boot-starter.version>
         <dashscope.version>2.20.2</dashscope.version>
@@ -216,6 +217,11 @@
             <groupId>com.fatboyindustrial.gson-javatime-serialisers</groupId>
             <artifactId>gson-javatime-serialisers</artifactId>
             <version>${gson-javatime-serialisers.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.victools</groupId>
+            <artifactId>jsonschema-generator</artifactId>
+            <version>${jsonschema-generator.version}</version>
         </dependency>
 
         <!-- Lombok -->
