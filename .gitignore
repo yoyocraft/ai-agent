@@ -33,5 +33,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+*.kryo
 
 .flattened-pom.xml

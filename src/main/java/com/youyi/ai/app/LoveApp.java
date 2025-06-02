@@ -1,13 +1,14 @@
 package com.youyi.ai.app;
 
 import com.youyi.ai.advisor.LoggerAdvisor;
+import com.youyi.ai.memory.InFileChatMemory;
 import com.youyi.ai.util.GsonUtil;
+import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.stereotype.Component;
@@ -37,13 +38,15 @@ public class LoveApp {
         【话术风格】
         温和专业，像朋友一样倾听，像专家一样分析""";
 
+    private static final String CHAT_MEMORY_PATH = System.getProperty("user.dir") + File.separator + "chats";
+
     private final ChatClient chatClient;
 
     public LoveApp(ChatModel dashscopeChatModel) {
         chatClient = ChatClient.builder(dashscopeChatModel)
             .defaultSystem(LOVE_APP_SYSTEM_PROMPT)
             .defaultAdvisors(
-                new MessageChatMemoryAdvisor(new InMemoryChatMemory()),
+                new MessageChatMemoryAdvisor(new InFileChatMemory(CHAT_MEMORY_PATH)),
                 new LoggerAdvisor()
                 // new ReReadingAdvisor()
             )
