@@ -1,5 +1,6 @@
 package com.youyi.ai.app;
 
+import com.youyi.ai.advisor.LoggerAdvisor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
@@ -41,7 +42,8 @@ public class LoveApp {
         chatClient = ChatClient.builder(dashscopeChatModel)
             .defaultSystem(LOVE_APP_SYSTEM_PROMPT)
             .defaultAdvisors(
-                new MessageChatMemoryAdvisor(new InMemoryChatMemory())
+                new MessageChatMemoryAdvisor(new InMemoryChatMemory()),
+                new LoggerAdvisor()
             )
             .build();
     }
