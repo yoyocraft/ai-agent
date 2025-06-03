@@ -1,4 +1,4 @@
-package com.youyi.ai.memory;
+package com.youyi.ai.app.memory;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;

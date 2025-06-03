@@ -1,4 +1,4 @@
-package com.youyi.ai.advisor;
+package com.youyi.ai.app.advisor;
 
 import java.util.HashMap;
 import java.util.Map;

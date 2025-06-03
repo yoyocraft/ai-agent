@@ -2,7 +2,7 @@ package com.youyi.ai.core;
 
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import com.youyi.ai.BaseIT;
-import com.youyi.ai.advisor.LoggerAdvisor;
+import com.youyi.ai.app.advisor.LoggerAdvisor;
 import com.youyi.ai.util.GsonUtil;
 import jakarta.annotation.Resource;
 import java.io.IOException;

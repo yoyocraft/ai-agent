@@ -1,4 +1,4 @@
-package com.youyi.ai.advisor;
+package com.youyi.ai.app.advisor;
 
 import javax.annotation.Nonnull;
 import org.slf4j.Logger;

@@ -1,16 +1,19 @@
 package com.youyi.ai.app;
 
-import com.youyi.ai.advisor.LoggerAdvisor;
-import com.youyi.ai.memory.InFileChatMemory;
+import com.youyi.ai.app.advisor.LoggerAdvisor;
+import com.youyi.ai.app.memory.InFileChatMemory;
 import com.youyi.ai.util.GsonUtil;
+import jakarta.annotation.Resource;
 import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 
 /**
@@ -41,6 +44,9 @@ public class LoveApp {
     private static final String CHAT_MEMORY_PATH = System.getProperty("user.dir") + File.separator + "chats";
 
     private final ChatClient chatClient;
+
+    @Resource
+    private VectorStore appVectorStore;
 
     public LoveApp(ChatModel dashscopeChatModel) {
         chatClient = ChatClient.builder(dashscopeChatModel)
@@ -81,6 +87,21 @@ public class LoveApp {
             .entity(LoveReport.class);
         logger.info("love report: {}", GsonUtil.toJson(loveReport));
         return loveReport;
+    }
+
+    public String chatWithRag(String message, String chatId) {
+        ChatResponse response = chatClient
+            .prompt()
+            .user(message)
+            .advisors(
+                spec -> spec
+                    .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                    .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10)
+            )
+            .advisors(new QuestionAnswerAdvisor(appVectorStore))
+            .call()
+            .chatResponse();
+        return response.getResult().getOutput().getText();
     }
 
 }
