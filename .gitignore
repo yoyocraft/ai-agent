@@ -36,3 +36,5 @@ build/
 *.kryo
 
 .flattened-pom.xml
+
+*-local.yaml
