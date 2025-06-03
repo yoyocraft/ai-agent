@@ -42,6 +42,38 @@ public class LoveApp {
         【话术风格】
         温和专业，像朋友一样倾听，像专家一样分析""";
 
+    private static final String LOOK_FOR_ROMANTIC_PARTNER_PROMPT = """
+        你是一个智能恋爱匹配助手，请根据用户的要求从知识库中寻找最适合的恋爱对象。请严格按照以下规则执行：
+        1. 匹配规则：
+           - 最多返回5个最匹配的候选人
+           - 必须严格遵守用户指定的性别要求（男/女）
+           - 必须满足用户提出的核心条件（如年龄范围、身高要求等硬性条件）
+           - 对于非硬性条件（如兴趣爱好、职业等），按匹配度排序
+        2. 输出格式要求：
+           - 如果找到匹配对象：
+             [候选人1]: [姓名]，[年龄]岁，[性别]，[身高]，[职业]，[兴趣爱好]，匹配度：[X%]
+             [候选人2]: [姓名]，[年龄]岁，[性别]，[身高]，[职业]，[兴趣爱好]，匹配度：[X%]
+             ...
+             *共找到X位匹配对象*
+           - 如果找不到任何匹配对象：
+             "未找到符合条件的匹配对象，请联系管理员更新知识库"
+        3. 匹配度计算标准：
+           - 硬性条件（性别、年龄等）必须100%匹配
+           - 其他条件按重要性加权计算（用户明确强调的条件权重更高）
+           - 兴趣爱好等软性条件按重合度计算
+        4. 特别要求：
+           - 性别必须明确匹配，不可模糊处理
+           - 如果用户要求"正常"性别，默认为男女二元性别
+           - 不得编造知识库中不存在的信息
+        5. 示例响应：
+           用户输入：寻找25-30岁之间，身高170cm以上，喜欢旅行的女性
+           正确响应：
+           [候选人1]: 张雨晴，27岁，女，172cm，设计师，旅行/摄影/咖啡，匹配度：92%
+           [候选人2]: 李思思，28岁，女，175cm，市场专员，徒步/美食/旅行，匹配度：88%
+           *共找到2位匹配对象*
+           用户输入：寻找40岁以上，身高190cm的男性
+           正确响应：
+           "未找到符合条件的匹配对象，请联系管理员更新知识库\"""";
     private static final String CHAT_MEMORY_PATH = System.getProperty("user.dir") + File.separator + "chats";
 
     private final ChatClient chatClient;
@@ -51,6 +83,9 @@ public class LoveApp {
 
     @Resource
     private Advisor appDashscopeRagAdvisor;
+
+    @Resource
+    private VectorStore romanticPartnerVectorStore;
 
     public LoveApp(ChatModel dashscopeChatModel) {
         chatClient = ChatClient.builder(dashscopeChatModel)
@@ -118,6 +153,22 @@ public class LoveApp {
                     .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10)
             )
             .advisors(appDashscopeRagAdvisor)
+            .call()
+            .chatResponse();
+        return response.getResult().getOutput().getText();
+    }
+
+    public String chatForRomanticPartner(String message, String chatId) {
+        ChatResponse response = chatClient
+            .prompt()
+            .system(LOOK_FOR_ROMANTIC_PARTNER_PROMPT)
+            .user(message)
+            .advisors(
+                spec -> spec
+                    .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                    .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10)
+            )
+            .advisors(new QuestionAnswerAdvisor(romanticPartnerVectorStore))
             .call()
             .chatResponse();
         return response.getResult().getOutput().getText();

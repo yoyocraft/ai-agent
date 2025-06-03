@@ -25,4 +25,11 @@ public class AppVectorStoreConfig {
         return vectorStore;
     }
 
+    @Bean
+    public VectorStore romanticPartnerVectorStore(EmbeddingModel dashscopeEmbeddingModel) {
+        SimpleVectorStore vectorStore = SimpleVectorStore.builder(dashscopeEmbeddingModel)
+            .build();
+        vectorStore.add(appDocumentLoader.loadJson());
+        return vectorStore;
+    }
 }

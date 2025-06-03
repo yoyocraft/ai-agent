@@ -19,6 +19,13 @@ class AppDocumentLoaderTest {
         Assertions.assertNotNull(result);
         Assertions.assertFalse(result.isEmpty());
     }
+
+    @Test
+    void testLoadJson() {
+        List<Document> result = appDocumentLoader.loadJson();
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty());
+    }
 }
 
 // Generated with love by TestMe :) Please raise issues & feature requests at: https://weirddev.com/forum#!/testme

@@ -63,4 +63,12 @@ class LoveAppIT extends BaseIT {
         String response = loveApp.chatWithDashscopeRag(message, chatId);
         Assertions.assertNotNull(response);
     }
+
+    @Test
+    void testChatForRomanticPartner() {
+        String chatId = IdUtil.simpleUUID();
+        String message = "我22岁，贵阳人，射手座，男，170，211本，研0在读，爱好乒乓球、骑机车，没有不良嗜好，找个对象呢！";
+        String response = loveApp.chatForRomanticPartner(message, chatId);
+        Assertions.assertNotNull(response);
+    }
 }
