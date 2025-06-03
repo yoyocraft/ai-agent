@@ -11,6 +11,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -47,6 +48,9 @@ public class LoveApp {
 
     @Resource
     private VectorStore appVectorStore;
+
+    @Resource
+    private Advisor appDashscopeRagAdvisor;
 
     public LoveApp(ChatModel dashscopeChatModel) {
         chatClient = ChatClient.builder(dashscopeChatModel)
@@ -99,6 +103,21 @@ public class LoveApp {
                     .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10)
             )
             .advisors(new QuestionAnswerAdvisor(appVectorStore))
+            .call()
+            .chatResponse();
+        return response.getResult().getOutput().getText();
+    }
+
+    public String chatWithDashscopeRag(String message, String chatId) {
+        ChatResponse response = chatClient
+            .prompt()
+            .user(message)
+            .advisors(
+                spec -> spec
+                    .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                    .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10)
+            )
+            .advisors(appDashscopeRagAdvisor)
             .call()
             .chatResponse();
         return response.getResult().getOutput().getText();

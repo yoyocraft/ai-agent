@@ -55,4 +55,12 @@ class LoveAppIT extends BaseIT {
         String response = loveApp.chatWithRag(message, chatId);
         Assertions.assertNotNull(response);
     }
+
+    @Test
+    void testChatWithDashscopeRag() {
+        String chatId = IdUtil.simpleUUID();
+        String message = "我已经结婚了，但是婚后关系不太亲密，怎么办？";
+        String response = loveApp.chatWithDashscopeRag(message, chatId);
+        Assertions.assertNotNull(response);
+    }
 }
