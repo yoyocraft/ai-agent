@@ -34,6 +34,7 @@
         <spring-ai-ollama.version>1.0.0-M6</spring-ai-ollama.version>
         <langchain4j.version>1.0.1-beta6</langchain4j.version>
         <kryo.version>5.6.2</kryo.version>
+        <jsoup.version>1.20.1</jsoup.version>
 
         <!-- Plugin -->
         <maven-flatten-plugin.version>1.5.0</maven-flatten-plugin.version>
@@ -291,6 +292,13 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-advisors-vector-store</artifactId>
             <version>${spring-ai.version}</version>
+        </dependency>
+
+        <!-- Jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
     </dependencies>
 

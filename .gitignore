@@ -38,3 +38,4 @@ build/
 .flattened-pom.xml
 
 *-local.yaml
+tmp

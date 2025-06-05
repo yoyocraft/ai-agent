@@ -21,7 +21,7 @@ public class AppVectorStoreConfig {
     public VectorStore appVectorStore(EmbeddingModel dashscopeEmbeddingModel) {
         SimpleVectorStore vectorStore = SimpleVectorStore.builder(dashscopeEmbeddingModel)
             .build();
-        vectorStore.add(appDocumentLoader.loadMarkdown());
+        // vectorStore.add(appDocumentLoader.loadMarkdown());
         return vectorStore;
     }
 
@@ -29,7 +29,7 @@ public class AppVectorStoreConfig {
     public VectorStore romanticPartnerVectorStore(EmbeddingModel dashscopeEmbeddingModel) {
         SimpleVectorStore vectorStore = SimpleVectorStore.builder(dashscopeEmbeddingModel)
             .build();
-        vectorStore.add(appDocumentLoader.loadJson());
+        // vectorStore.add(appDocumentLoader.loadJson());
         return vectorStore;
     }
 }

@@ -71,4 +71,12 @@ class LoveAppIT extends BaseIT {
         String response = loveApp.chatForRomanticPartner(message, chatId);
         Assertions.assertNotNull(response);
     }
+
+    @Test
+    void testChatWithTool() {
+        String chatId = IdUtil.simpleUUID();
+        String message = "我想看看 https://bitfree.cn 有哪些东西";
+        String response = loveApp.chatWithTool(message, chatId);
+        Assertions.assertNotNull(response);
+    }
 }

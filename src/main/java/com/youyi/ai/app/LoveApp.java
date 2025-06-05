@@ -14,6 +14,7 @@ import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 
@@ -86,6 +87,9 @@ public class LoveApp {
 
     @Resource
     private VectorStore romanticPartnerVectorStore;
+
+    @Resource
+    private ToolCallback[] allTools;
 
     public LoveApp(ChatModel dashscopeChatModel) {
         chatClient = ChatClient.builder(dashscopeChatModel)
@@ -169,6 +173,22 @@ public class LoveApp {
                     .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10)
             )
             .advisors(new QuestionAnswerAdvisor(romanticPartnerVectorStore))
+            .call()
+            .chatResponse();
+        return response.getResult().getOutput().getText();
+    }
+
+    public String chatWithTool(String message, String chatId) {
+        ChatResponse response = chatClient
+            .prompt()
+            .system("智能助手")
+            .user(message)
+            .advisors(
+                spec -> spec
+                    .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                    .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10)
+            )
+            .tools(allTools)
             .call()
             .chatResponse();
         return response.getResult().getOutput().getText();
