@@ -18,7 +18,8 @@ public class ToolRegistrar {
             new TerminalOperationTool(),
             // new WebSearchTool(),
             new WebScrapingTool(),
-            new FileOperationTool()
+            new FileOperationTool(),
+            new TerminateTool()
         );
     }
 }

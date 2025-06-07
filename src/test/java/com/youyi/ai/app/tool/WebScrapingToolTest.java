@@ -12,7 +12,7 @@ class WebScrapingToolTest {
 
     @Test
     void testScrapeWebPage() {
-        String result = webScrapingTool.scrapeWebPage("https://bitfree.cn");
+        String result = webScrapingTool.scrapeWebPage("https://newsnow.busiyi.world/");
         Assertions.assertNotNull(result);
     }
 }
